@@ -1,4 +1,5 @@
 language,
+path_name, tile/
 country_name,
 region_name,
 original_survey_method,
