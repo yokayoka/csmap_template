@@ -1,0 +1,31 @@
+{
+    "language":"ja",
+    "path_name":"tile/myarea",
+    "country_name":"myregion",
+    "region_name":"myregion",
+    "original_survey_method":"Airbone LiDAR by an airplane",
+    "point_density_per_sqm":4,
+    "survay_date":"2021/04/30",
+    "surveyor":"AAAA Corporation",
+    "ordering party":"BBBB Prefecture",
+    "original_dem_format":"geotiff",
+    "original_dem_gridsize_metric":1.0,
+    "app_used_for_csmap":"csmap maker on QIS",
+    "EPSG_code":3857,
+    "image_format":"png",
+    "channels":3,
+    "depth":8,
+    "min_longitude":140.0000,
+    "max_longitude":141.0000,
+    "min_latitude":39.0000,
+    "max_latitude":40.0000,
+    "max_zoom":18,
+    "min_zoom":14,
+    "author":"myname",
+    "reference":"",
+    "copyright":"クリエイティブ・コモンズ 表示-改変禁止 4.0 国際 パブリック・ライセンス",
+    "distribution_date":"2021/11/01",
+    "remarks":[""]
+}
+
+

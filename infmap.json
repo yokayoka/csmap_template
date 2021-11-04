@@ -1,0 +1,31 @@
+{
+    "language":,
+    "path_name":"tile/",
+    "country_name":"",
+    "region_name":"",
+    "original_survey_method":"",
+    "point_density_per_sqm":,
+    "survay_date":"",
+    "surveyor":"",
+    "ordering party":"",
+    "original_dem_format":"",
+    "original_dem_gridsize_metric":,
+    "app_used_for_csmap":"",
+    "EPSG_code":3857,
+    "image_format":"",
+    "channels":,
+    "depth":,
+    "min_longitude":,
+    "max_longitude":,
+    "min_latitude":,
+    "max_latitude":,
+    "max_zoom":,
+    "min_zoom":,
+    "author":"",
+    "reference":"",
+    "copyright":"",
+    "distribution_date":"",
+    "remarks":[""]
+}
+
+
