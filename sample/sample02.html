@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>sample map</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+    <script>
+            // jsonファイルを使わずにマップの情報をあらかじめ直接記入する
+            var maps = [
+            {
+                "path": "https://yokayoka.github.io/csmap_template/sample/tile/myregion/{z}/{x}/{y}.png",
+                "name": "myregion",
+                "caption": "sample area",
+                "max_zoom":14,
+                "min_zoom":6,
+                "init_zoom":12,
+                "init_x": 132.75326189977,
+                "init_y":34.30998339804009,
+            },];
+
+        //とりあえずcs立体図を１枚のみに限定してmaps[0]のプロパティをLeafletのパラメータに反映させてみる
+        function init(){
+            var map = L.map('mymap',{
+                center: [maps[0].init_y, maps[0].init_x],
+                zoomControl:false,
+                zoom: maps[0].init_zoom,
+                minzoom: maps[0].min_zoom,
+                maxzoom: maps[0].max_zoom
+            });
+            //map.setView([34.30998339804009, 132.75326189977], 12);
+            L.control.scale({maxWidth:200,position:'bottomright',imperial:false}).addTo(map);
+            L.control.zoom({position:'bottomleft'}).addTo(map);
+
+            
+
+            //オープンストリートマップのタイル
+            var osm = L.tileLayer('http://tile.openstreetmap.jp/{z}/{x}/{y}.png',
+                {  attribution: "<a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors" });
+            
+            // maps という配列に記載した地図タイルのアドレスからCS立体図を読み込む
+            var csmap = L.tileLayer(maps[0].path);
+
+            // github 内のレポジトリから直接地図タイルを参照する際には下記のように記述して下さい。
+            // myregion はtile下に置いたフォルダーの名前です。適宜変更して下さい。
+            // var csmap = L.tileLayer('tile/myregion/{z}/{x}/{y}.png');
+
+            //baseMapsオブジェクトのプロパティに3つのタイルを設定
+            var baseMaps = {
+                "Open Street Map": osm,
+                "CS立体図": csmap
+            };
+
+            L.control.layers(baseMaps).addTo(map);
+            gsi.addTo(map);
+        }
+  </script>   
+</head>
+<body onload="init()">
+    <div id="mymap" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+
+</body>
+</html>
