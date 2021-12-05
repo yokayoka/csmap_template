@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <!-- URL パラメータを用いてxyzの初期値を指定してマップを表示する
-    27 Nov. 2021 by H. Daimaru
-    下記のようにURLを指定してください
-    file:///D:/develop/prism_sites/csmap/csmap_template/sample/test_url_params.html?y=34.3099&x=132.753261&z=14 -->
+    6 Dec. 2021 by H. Daimaru
+    下記のようにURLの ? の後ろにパラメータを指定してください。
+    緯度：34.3099、経度：132.753261、zoom level: 14 の場合
+    test_url_params.html?y=34.3099&x=132.753261&z=14
+    -->
 
     <title>sample map using url parameters</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,9 +30,23 @@
 
         //とりあえずcs立体図を１枚のみに限定してmaps[0]のプロパティをLeafletのパラメータに反映させてみる
         function init(){
+            // x, y, zの初期値を定義する 広島国際大学付近に設定
+            var ini_x = 132.6868;
+            var ini_y = 34.3134;
+            var ini_z = 14;
+            // zoom level の最大値と最小値を定義
+            var max_z = 14;
+            var min_z = 6;
+            // URL パラメータからx, y, zを取得する
             var x = parseFloat(getParam("x"));
             var y = parseFloat(getParam("y"));
             var z = parseInt(getParam("z"));
+
+            // x, y が数値で有効な範囲の時にURLパラメータからの数値を初期値に設定する
+            if((Number.isFinite(x))&&(x<=180)&&(x>=-180)){ini_x=x;}
+            if((Number.isFinite(y))&&(y<=90)&&(y>=-90)){ini_y=y;}
+            // URLパラメータから値を取得した z が整数で、準備されたマップのzoom levelの範囲内の時に値を更新する
+            if((Number.isInteger(z))&&(z>=min_z)&&(z<=max_z)){ini_z=z;}
             var maps = [
             {
                 "web": "https://yokayoka.github.io/csmap_template/sample/tile/myregion/{z}/{x}/{y}.png",
@@ -41,14 +57,14 @@
             },];
 
             var map = L.map('mymap',{
-                center: [y, x],
+                center: [ini_y, ini_x],
                 zoomControl:false,
-                zoom: z,
+                zoom: ini_z,
                 minzoom: maps[0].min_zoom,
                 maxzoom: maps[0].max_zoom
             });
 
-            L.marker([y, x]).addTo(map);
+            L.marker([ini_y, ini_x]).addTo(map);
 
             //map.setView([34.30998339804009, 132.75326189977], 12);
             L.control.scale({maxWidth:200,position:'bottomright',imperial:false}).addTo(map);
