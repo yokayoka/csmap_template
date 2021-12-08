@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>地図をクリックしてマーカーとURLリンクの表示とマーカー削除</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+  <script>
+    //urlパラメータを取得するための関数
+    function getParam(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return "";
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    //地図オブジェクトを入れる変数をグローバルにする
+    var map;
+    var popMarker;
+
+
+    function init() {
+            // x, y, zの初期値を定義する 科学園付近に設定
+            var ini_x = 139.2795;
+            var ini_y = 35.6460;
+            var ini_z = 14;
+            // zoom level の最大値と最小値を定義
+            var max_z = 14;
+            var min_z = 6;
+            // URL パラメータからx, y, zを取得する
+            var x = parseFloat(getParam("x"));
+            var y = parseFloat(getParam("y"));
+            var z = parseInt(getParam("z"));
+
+            // x, y が数値で有効な範囲の時にURLパラメータからの数値を初期値に設定する
+            if((Number.isFinite(x))&&(x<=180)&&(x>=-180)){ini_x=x;}
+            if((Number.isFinite(y))&&(y<=90)&&(y>=-90)){ini_y=y;}
+
+            // URLパラメータから値を取得した z が整数で、準備されたマップのzoom levelの範囲内の時に値を更新する
+            if((Number.isInteger(z))&&(z>=min_z)&&(z<=max_z)){ini_z=z;}
+
+      map = L.map('mapcontainer', { zoomControl: false });
+      var mpoint = [ini_y, ini_x];
+      map.setView(mpoint, ini_z);
+      L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+          attribution: "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+      }).addTo(map);
+      //地図のclickイベントでonMapClick関数を呼び出し
+      map.on('click', onMapClick);
+    }
+    function onMapClick(e) {
+      //地図のclickイベント呼び出される
+      //クリック地点の座標にマーカーを追加、マーカーのclickイベントでonMarkerClick関数を呼び出し
+      //var mk = L.marker(e.latlng).on('click', onMarkerClick).addTo(map);
+      map.setView(e.latlng, 17);
+      var mk = L.marker(e.latlng).on('click', onMarkerClick).addTo(map);
+      popMarker = L.popup({maxWidth:600, keepInView:true});
+      popMarker.setLatLng(e.latlng);
+      popMarker.setContent("<h3>" + location.href + "?x=" + e.latlng.lat.toFixed(5) + "&y=" + e.latlng.lng.toFixed(5) + "</h3>");
+      map.openPopup(popMarker);
+    }
+    function onMarkerClick(e) {
+      //マーカーのclickイベント呼び出される
+      //クリックされたマーカーを地図のレイヤから削除する
+      map.removeLayer(e.target);
+    }
+  </script>
+</head>
+<body onload="init()">
+  <div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;"></div>
+</body>
+</html>
