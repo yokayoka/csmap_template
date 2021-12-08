@@ -23,9 +23,9 @@
 
 
     function init() {
-            // x, y, zの初期値を定義する 科学園付近に設定
-            var ini_x = 139.2795;
-            var ini_y = 35.6460;
+            // x, y, zの初期値を定義する 科学園付近に設定 35.6460809745168, 139.27952933008746
+            var ini_x = 139.27952933008746;
+            var ini_y = 35.6460809745168;
             var ini_z = 14;
             // zoom level の最大値と最小値を定義
             var max_z = 14;
@@ -48,6 +48,9 @@
       L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
           attribution: "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
       }).addTo(map);
+      //popMarker.setContent("");
+      // もしURL パラメータから得られた値が有効な値の場合はそこにマーカーを表示する
+      if((Number.isFinite(x))&&(x<=180)&&(x>=-180)&&(Number.isFinite(y))&&(y<=90)&&(y>=-90)){L.marker(mpoint).addTo(map);}
       //地図のclickイベントでonMapClick関数を呼び出し
       map.on('click', onMapClick);
     }
@@ -59,7 +62,7 @@
       var mk = L.marker(e.latlng).on('click', onMarkerClick).addTo(map);
       popMarker = L.popup({maxWidth:600, keepInView:true});
       popMarker.setLatLng(e.latlng);
-      popMarker.setContent("<h3>" + location.href + "?x=" + e.latlng.lat.toFixed(5) + "&y=" + e.latlng.lng.toFixed(5) + "</h3>");
+      popMarker.setContent("<h3>" + location.href + "?x=" + e.latlng.lng.toFixed(7) + "&y=" + e.latlng.lat.toFixed(7) + "</h3>");
       map.openPopup(popMarker);
     }
     function onMarkerClick(e) {
